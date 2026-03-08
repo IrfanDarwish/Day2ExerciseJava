@@ -2,52 +2,82 @@ import java.util.Scanner;
 
 public class BudgetSplitter {
     
-    public static double readPositiveDouble(Scanner scanner, String prompt){
-        double totalAmount;
-        boolean amountIsValid;
+
+    public static double readValidDouble(Scanner scanner, String prompt, double min, double max){
+        double value;
 
         while (true) {
             System.out.print(prompt);
-            totalAmount = scanner.nextDouble();
-            scanner.nextLine();
-            amountIsValid = totalAmount > 0;
+            try {
+                value = scanner.nextDouble();
+                scanner.nextLine();
 
-            if (amountIsValid) {
-                return totalAmount;
+                if (value >= min && value <= max) {
+                    return value;
+                }else {
+                    System.out.printf("Invalid input. Total must be greater than %.2f%n", min);
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a numeric input.");
+                scanner.nextLine();
             }
-            System.out.println("Invalid input. Please enter a positive number.");
         }
 
     }
+    // public static double readPositiveDouble(Scanner scanner, String prompt){
+    //     double totalAmount;
 
-    public static int readMinInt(Scanner scanner, String prompt){
-        int numberOfPeople;
-        boolean personIsValid;
+    //     while (true) {
+    //         System.out.print(prompt);
+    //         try {
+    //             totalAmount = scanner.nextDouble();
+    //             scanner.nextLine();
 
-        while (true){
-            System.out.print("Enter the number of people: ");
-            numberOfPeople = scanner.nextInt();
-            scanner.nextLine();
-            personIsValid = numberOfPeople >= 0;
+    //             if (totalAmount > 0) {
+    //                 return totalAmount;
+    //             }else {
+    //                 System.out.println("Invalid input. Total amount must be greater than 0.");
+    //             }
+    //         } catch (Exception e) {
+    //             System.out.println("Invalid input. Please enter a numeric input.");
+    //             scanner.nextLine();
+    //         }
+    //     }
+    // }
 
-            if (personIsValid){
-                return numberOfPeople;
-            }
+    // public static int readMinInt(Scanner scanner, String prompt){
+    //     int numberOfPeople;
 
-            System.out.println("Invalid input. Number of people must be at least 1.");
-        }
-    }
+    //     while (true){
+    //         System.out.print(prompt);
+    //         try {
+    //             numberOfPeople = scanner.nextInt();
+    //             scanner.nextLine();
 
-    public static double calculateSplit(double totalAmount, int numberOfPeople){
-        double split = totalAmount / numberOfPeople;
+    //             if (numberOfPeople > 0){
+    //                 return numberOfPeople;
+    //             }else {
+    //                 System.out.println("Invalid input. Number of people must be at least 1.");
+    //             }
+    //         } catch (Exception e) {
+    //             System.out.println("Invalid input. Please enter a numeric input.");
+    //             scanner.nextLine();
+    //         }
+            
+            
+    //     }
+    // }
+
+    public static double calculateSplit(double total, int people){
+        double split = total / people;
         return split;
     }
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
-        double total = readPositiveDouble(scanner, "Enter the total amount: ");
-        int people = readMinInt(scanner, "Enter the number of people: ");
+        double total = readValidDouble(scanner, "Enter the total amount: ", 0.01, Double.MAX_VALUE);
+        int people = (int) readValidDouble(scanner, "Enter the number of people: ", 1, Integer.MAX_VALUE);
         double split = calculateSplit(total, people);
         
         Transaction bill = new Transaction("Group Bill", total);
