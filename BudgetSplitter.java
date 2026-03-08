@@ -49,8 +49,11 @@ public class BudgetSplitter {
         double total = readPositiveDouble(scanner, "Enter the total amount: ");
         int people = readMinInt(scanner, "Enter the number of people: ");
         double split = calculateSplit(total, people);
+        
+        Transaction bill = new Transaction("Group Bill", total);
+        bill.printSummary();
 
-        System.out.printf("Each pays: RM %.2f%n", split);
+        System.out.printf("Each pays: RM%.2f%n", split);
         
 
         
